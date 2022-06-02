@@ -1,0 +1,21 @@
+package helper
+
+import (
+	"io"
+
+	"github.com/jlaffaye/ftp"
+)
+
+func ReadFile(ftpResponse ftp.Response) (string, error) {
+	var result string
+	var err error
+	buffer := make([]byte, 1)
+	for {
+		num, err := ftpResponse.Read(buffer)
+		if err == io.EOF {
+			break
+		}
+		result += string(buffer[:num])
+	}
+	return result, err
+}
